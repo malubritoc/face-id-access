@@ -1,0 +1,19 @@
+@tailwind components;
+
+@layer components {
+    .label {
+        @apply text-white text-center
+    }
+
+    .input {
+        @apply w-full p-3 rounded-[10px]
+    }
+
+    .div-field {
+        @apply max-w-[588px] w-full flex flex-col items-start gap-1 
+    }
+
+    .error-message {
+        @apply text-xs text-red-500 mt-[-2px]
+    }
+}

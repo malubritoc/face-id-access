@@ -2,13 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
+import axios from "axios";
 // import axios from "axios";
 
-export function WebcamCapture({ register }: { register?: boolean }) {
+export function WebcamCapture() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [image, setImage] = useState<string | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
+  const [loading, setLoading] = useState(false);
 
   async function startCamera() {
     try {
@@ -51,34 +53,38 @@ export function WebcamCapture({ register }: { register?: boolean }) {
 
   const uploadImage = async () => {
     if (!image) return;
+    setLoading(true);
 
     const blob = await (await fetch(image)).blob();
     const formData = new FormData();
     formData.append("file", blob, "captured-image.png");
 
+    console.log(image);
+
     try {
-      if (register) {
-        //   const response = await axios.post("/api/register", formData, {
-        //   headers: { "Content-Type": "multipart/form-data" },
-        //   });
-        console.log("Imagem registrada:", image);
-        setImage(null);
-        startCamera();
-        alert("Imagem registrada com sucesso!");
-        return;
-      }
+      const response = await axios.post(
+        "https://41ea-2804-29b8-50d3-e47e-f3b8-6281-f64-3764.ngrok-free.app/api/client/save",
+        {
+          name: "Chrystian",
+          email: "chrystian@gmail.com",
+          facial_image: image,
+          permissions: ["a", "b", "c"],
+        },
+        {
+          headers: { accessKey: "Sva7P1nRGDKi8_Slh_XeiVyi7PTHFh-w" },
+        }
+      );
 
-      // const response = await axios.post("/api/upload", formData, {
-      //   headers: { "Content-Type": "multipart/form-data" },
-      // });
-
+      console.log(response);
       console.log("Imagem enviada:", image);
       setImage(null);
       startCamera();
       alert("Imagem enviada com sucesso!");
+      setLoading(false);
     } catch (error) {
       console.error("Erro ao enviar a imagem:", error);
       alert("Erro ao enviar a imagem.");
+      setLoading(false);
     }
   };
 
@@ -107,8 +113,12 @@ export function WebcamCapture({ register }: { register?: boolean }) {
           </Button>
         ) : (
           <>
-            <Button className="max-w-96 w-full" onClick={uploadImage}>
-              Entrar
+            <Button
+              disabled={loading}
+              className="max-w-96 w-full"
+              onClick={uploadImage}
+            >
+              {loading ? "Enviando imagem..." : "Entrar"}
             </Button>
             <Button
               onClick={() => {
