@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Kanit } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/header";
+import { Toaster } from "@/components/ui/toaster";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body className="antialiased flex flex-col gap-12 items-center">
         <Header />
         {children}
+        <Toaster />
       </body>
     </html>
   );

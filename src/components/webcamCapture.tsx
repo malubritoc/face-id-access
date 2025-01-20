@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import axios from "axios";
+import { toast } from "@/hooks/use-toast";
 // import axios from "axios";
 
 export function WebcamCapture() {
@@ -62,7 +63,7 @@ export function WebcamCapture() {
     console.log(image);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         "https://41ea-2804-29b8-50d3-e47e-f3b8-6281-f64-3764.ngrok-free.app/api/client/save",
         {
           name: "Chrystian",
@@ -74,16 +75,22 @@ export function WebcamCapture() {
           headers: { accessKey: "Sva7P1nRGDKi8_Slh_XeiVyi7PTHFh-w" },
         }
       );
-
-      console.log(response);
-      console.log("Imagem enviada:", image);
       setImage(null);
       startCamera();
-      alert("Imagem enviada com sucesso!");
+      toast({
+        variant: "success",
+        title: "Usuário autorizado!",
+        description: "Foi econtrada uma autorização para este usuário.",
+      });
       setLoading(false);
     } catch (error) {
-      console.error("Erro ao enviar a imagem:", error);
-      alert("Erro ao enviar a imagem.");
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Usuário não autorizado!",
+        description:
+          "Não foi encontrada uma autorização para este usuário. Tente se posicionar novamente e enviar uma nova imagem ou fazer o cadastro de um novo usuário.",
+      });
       setLoading(false);
     }
   };

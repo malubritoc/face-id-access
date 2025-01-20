@@ -1,3 +1,5 @@
+"use client";
+
 import { Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { AddNewPersonDialogContent } from "./addNewPersonDialogContent";
@@ -7,10 +9,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import { useState } from "react";
 
 export function AddNewPersonButton() {
+  const [isOpen, setIsOpen] = useState(false);
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger>
         <TooltipProvider>
           <Tooltip>
@@ -24,7 +28,7 @@ export function AddNewPersonButton() {
         </TooltipProvider>
       </DialogTrigger>
       <DialogContent className="max-h-[90%] overflow-y-scroll no-scrollbar">
-        <AddNewPersonDialogContent />
+        <AddNewPersonDialogContent setIsOpen={setIsOpen} />
       </DialogContent>
     </Dialog>
   );

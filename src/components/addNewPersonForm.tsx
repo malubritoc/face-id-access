@@ -9,9 +9,10 @@ import { SpinnerGraySmall } from "@/components/spinnerGraySmall";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Checkbox } from "./ui/checkbox";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { WebcamCaptureNewPerson } from "./webcamCaptureNewPerson.tsx";
+import { toast } from "@/hooks/use-toast";
 
 const AddNewPersonFormSchema = z.object({
   name: z.string().min(1, { message: "Por favor, preencha este campo." }),
@@ -25,7 +26,11 @@ const AddNewPersonFormSchema = z.object({
 
 type AddNewPersonFormInputs = z.infer<typeof AddNewPersonFormSchema>;
 
-export function AddNewPersonForm() {
+export function AddNewPersonForm({
+  setIsOpen,
+}: {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   const permissions = ["a", "b", "c", "d"];
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
   const [registerImage, setRegisterImage] = useState<string | null>(null);
@@ -78,6 +83,13 @@ export function AddNewPersonForm() {
     }
     try {
       console.log(data);
+      toast({
+        variant: "success",
+        title: "Usuário cadastrado com sucesso!",
+        description:
+          "O usuário foi cadastrado com êxito e já pode ser identificado na página inicial.",
+      });
+      setIsOpen(false);
       //   const response = await axios.post(
       //     "https://41ea-2804-29b8-50d3-e47e-f3b8-6281-f64-3764.ngrok-free.app/api/client/save",
       //     {
@@ -95,6 +107,12 @@ export function AddNewPersonForm() {
     } catch (error) {
       console.error("Erro ao enviar a imagem:", error);
       alert("Erro ao enviar a imagem.");
+      toast({
+        variant: "destructive",
+        title: "Erro ao cadastrar novo usuário!",
+        description:
+          "Por favor, verifique seus dados e tente novamente mais tarde.",
+      });
     }
   }
 
