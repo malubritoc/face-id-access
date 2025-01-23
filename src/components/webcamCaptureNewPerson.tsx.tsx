@@ -1,17 +1,18 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { X } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 export function WebcamCaptureNewPerson({
-  setRegisterImage,
+  setRegisterImages,
 }: {
-  setRegisterImage: Dispatch<SetStateAction<string | null>>;
+  setRegisterImages: Dispatch<SetStateAction<string[] | null>>;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string>("");
   const [stream, setStream] = useState<MediaStream | null>(null);
+  const [images, setImages] = useState<string[]>([]);
 
   async function startCamera() {
     try {
@@ -49,16 +50,17 @@ export function WebcamCaptureNewPerson({
     context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
 
     const imageDataUrl = canvas.toDataURL("image/png");
-    setImage(imageDataUrl);
-    setRegisterImage(imageDataUrl);
+    setImages([...images, imageDataUrl]);
+    setRegisterImages([...images, imageDataUrl]);
+    startCamera();
   }
 
   return (
-    <div className="relative flex flex-col items-center gap-4">
-      {image ? (
+    <div className="relative flex flex-col gap-4">
+      {images.length >= 7 ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={image}
+          src={image ? image : images[images.length - 1]}
           alt="Captura"
           className="w-96 h-72 border border-[3px] border-white rounded-lg overflow-hidden px-[-2px]"
         />
@@ -72,18 +74,23 @@ export function WebcamCaptureNewPerson({
         />
       )}
       <canvas ref={canvasRef} className="hidden" />
-      {image && (
-        <div
-          className="absolute top-2 right-2 z-99 cursor-pointer"
-          onClick={() => {
-            setImage(null);
-            setRegisterImage(null);
-            startCamera();
-          }}
-        >
-          <X size={16} color="red" />
-        </div>
-      )}
+      <div className="flex items-center gap-2">
+        {images.map((image, index) => {
+          return (
+            <div key={index} className="relative w-12 h-8 ">
+              <img
+                src={image}
+                alt="Captura"
+                className="w-full h-full border border-[1px] border-white rounded-lg"
+              />
+              <div
+                onClick={() => images.length > 7 && setImage(image)}
+                className="absolute top-0 w-full h-full hover:bg-black/40 z-99 cursor-pointer"
+              />
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

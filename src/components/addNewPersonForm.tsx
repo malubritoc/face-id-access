@@ -20,7 +20,7 @@ const AddNewPersonFormSchema = z.object({
     .string()
     .email({ message: "E-mail inválido." })
     .min(1, { message: "Por favor, preencha este campo." }),
-  image: z.string().optional(),
+  image: z.array(z.string()).optional(),
   permissions: z.array(z.string()).optional(),
 });
 
@@ -33,7 +33,7 @@ export function AddNewPersonForm({
 }) {
   const permissions = ["a", "b", "c", "d"];
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
-  const [registerImage, setRegisterImage] = useState<string | null>(null);
+  const [registerImages, setRegisterImages] = useState<string[] | null>([]);
 
   const {
     register,
@@ -56,20 +56,20 @@ export function AddNewPersonForm({
   }
 
   useEffect(() => {
-    if (registerImage) {
-      setValue("image", registerImage);
+    if (registerImages) {
+      setValue("image", registerImages);
     }
-  }, [registerImage, setValue]);
+  }, [registerImages, setValue]);
 
   useEffect(() => {
     setValue("permissions", selectedPermissions);
   }, [selectedPermissions, setValue]);
 
   async function handleAddNewPerson(data: AddNewPersonFormInputs) {
-    if (!registerImage) {
+    if (!registerImages || registerImages.length < 7) {
       setError("image", {
         type: "manual",
-        message: "Por favor, registre sua face.",
+        message: "Por favor, registre sua face 7 vezes.",
       });
       return;
     }
@@ -142,8 +142,16 @@ export function AddNewPersonForm({
         )}
       </div>
       <div className="div-field">
-        <Label>Clique na imagem para registrar sua face</Label>
-        <WebcamCaptureNewPerson setRegisterImage={setRegisterImage} />
+        <Label>
+          Clique na imagem para registrar sua face 7 vezes{" "}
+          <span
+            data-complete={registerImages?.length === 7}
+            className="text-red-500 data-[complete=true]:text-[#1C9AEA]"
+          >
+            ({registerImages?.length}/7)
+          </span>
+        </Label>
+        <WebcamCaptureNewPerson setRegisterImages={setRegisterImages} />
         {errors.image && (
           <span className="error-message">{errors.image.message}</span>
         )}
