@@ -143,7 +143,8 @@ export function AddNewPersonForm({
       </div>
       <div className="div-field">
         <Label>
-          Clique na imagem para registrar sua face 7 vezes{" "}
+          Posicione-se com o rosto dentro do quadrado amarelo e clique na imagem
+          para registrar sua face. Repita o processo 7 vezes.{" "}
           <span
             data-complete={registerImages?.length === 7}
             className="text-red-500 data-[complete=true]:text-[#1C9AEA]"

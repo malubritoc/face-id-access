@@ -15,8 +15,8 @@ export default function Home() {
       </div>
       <div className="flex flex-col gap-2 items-center">
         <p>
-          Posicione-se na tela abaixo e quando estiver pronto clique no botão
-          &quot;Capturar&quot;.
+          Posicione-se na tela abaixo com o rosto dentro do quadrado amarelo e
+          quando estiver pronto clique no botão &quot;Capturar&quot;.
         </p>
         <p>
           Quando estiver satisfeito com a imagem capturada, clique no botão

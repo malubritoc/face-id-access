@@ -65,13 +65,16 @@ export function WebcamCaptureNewPerson({
           className="w-96 h-72 border border-[3px] border-white rounded-lg overflow-hidden px-[-2px]"
         />
       ) : (
-        <video
-          onClick={() => captureImage()}
-          ref={videoRef}
-          autoPlay
-          playsInline
-          className="w-96 h-72 border border-[3px] border-white rounded-lg overflow-hidden px-[-2px] cursor-pointer"
-        />
+        <div className="relative">
+          <video
+            onClick={() => captureImage()}
+            ref={videoRef}
+            autoPlay
+            playsInline
+            className="w-96 h-72 border border-[3px] border-white rounded-lg overflow-hidden px-[-2px] cursor-pointer"
+          />
+          <div className="absolute top-8 right-1/2 translate-x-[50%] w-36 h-40 border border-[3px] border-yellow-500 bg-transparent" />
+        </div>
       )}
       <canvas ref={canvasRef} className="hidden" />
       <div className="flex items-center gap-2">

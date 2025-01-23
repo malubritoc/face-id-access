@@ -105,12 +105,15 @@ export function WebcamCapture() {
           className="w-96 h-72 border border-[3px] border-[#1C9AEA] rounded-lg overflow-hidden px-[-2px]"
         />
       ) : (
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          className="w-96 h-72 border border-[3px] border-[#1C9AEA] rounded-lg overflow-hidden px-[-2px]"
-        />
+        <div className="relative">
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            className="w-96 h-72 border border-[3px] border-[#1C9AEA] rounded-lg overflow-hidden px-[-2px]"
+          />
+          <div className="absolute top-8 right-1/2 translate-x-[50%] w-36 h-40 border border-[3px] border-yellow-500 bg-transparent" />
+        </div>
       )}
       <canvas ref={canvasRef} className="hidden" />
       <div className="w-full flex flex-col items-center gap-2">
