@@ -13,6 +13,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { WebcamCaptureNewPerson } from "./webcamCaptureNewPerson.tsx";
 import { toast } from "@/hooks/use-toast";
+import axios from "axios";
 
 const AddNewPersonFormSchema = z.object({
   name: z.string().min(1, { message: "Por favor, preencha este campo." }),
@@ -83,6 +84,24 @@ export function AddNewPersonForm({
     }
     try {
       console.log(data);
+      await axios
+        .post(
+          "https://5d57-2804-29b8-50d3-e47e-9d8a-3d86-9b55-c736.ngrok-free.app/api/client/save",
+          {
+            name: data.name,
+            email: data.email,
+            facial_image: registerImages,
+            permissions: data.permissions,
+          },
+          {
+            headers: {
+              accessKey: "Sva7P1nRGDKi8_Slh_XeiVyi7PTHFh-w",
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        });
       toast({
         variant: "success",
         title: "Usuário cadastrado com sucesso!",
@@ -90,23 +109,8 @@ export function AddNewPersonForm({
           "O usuário foi cadastrado com êxito e já pode ser identificado na página inicial.",
       });
       setIsOpen(false);
-      //   const response = await axios.post(
-      //     "https://41ea-2804-29b8-50d3-e47e-f3b8-6281-f64-3764.ngrok-free.app/api/client/save",
-      //     {
-      //       name: data.name,
-      //       email: data.email,
-      //       facial_image: registerImage,
-      //       permissions: data.permissions,
-      //     },
-      //     {
-      //       headers: { accessKey: "Sva7P1nRGDKi8_Slh_XeiVyi7PTHFh-w" },
-      //     }
-      //   );
-      //   console.log(response);
-      //   console.log("Imagem enviada:", registerImage);
     } catch (error) {
       console.error("Erro ao enviar a imagem:", error);
-      alert("Erro ao enviar a imagem.");
       toast({
         variant: "destructive",
         title: "Erro ao cadastrar novo usuário!",

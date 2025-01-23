@@ -60,17 +60,12 @@ export function WebcamCapture() {
     const formData = new FormData();
     formData.append("file", blob, "captured-image.png");
 
-    console.log(image);
+    console.log(image.split(",")[1]);
 
     try {
       await axios.post(
-        "https://41ea-2804-29b8-50d3-e47e-f3b8-6281-f64-3764.ngrok-free.app/api/client/save",
-        {
-          name: "Chrystian",
-          email: "chrystian@gmail.com",
-          facial_image: image,
-          permissions: ["a", "b", "c"],
-        },
+        "https://5d57-2804-29b8-50d3-e47e-9d8a-3d86-9b55-c736.ngrok-free.app/api/facial-recognition",
+        image.split(",")[1],
         {
           headers: { accessKey: "Sva7P1nRGDKi8_Slh_XeiVyi7PTHFh-w" },
         }
