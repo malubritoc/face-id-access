@@ -64,7 +64,7 @@ export function WebcamCapture() {
 
     try {
       await axios.post(
-        "https://5d57-2804-29b8-50d3-e47e-9d8a-3d86-9b55-c736.ngrok-free.app/api/facial-recognition",
+        "https://32e7-2804-29b8-50d3-e47e-9d8a-3d86-9b55-c736.ngrok-free.app/api/facial-recognition",
         image.split(",")[1],
         {
           headers: { accessKey: "Sva7P1nRGDKi8_Slh_XeiVyi7PTHFh-w" },
