@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Para tornar a experiência do back-end mais visual e amigável aos usuários, foi criada uma interface com as seguintes características:
 
-## Getting Started
+1. Tecnologias Utilizadas
+   Next.js: Framework React para construção de aplicações web;
+   Tailwind: Framework CSS para estilização de componentes;
+   TypeScript: Superconjunto do JavaScript que adiciona tipagem estática.
 
-First, run the development server:
+2. Bibliotecas
+   Zod: Utilizada para criar esquemas de formulários;
+   Lucide: Utilizada como fonte de ícones svg.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+3. UI
+   shadcn: Coleção de componentes reutilizáveis utilizada para criar componentes.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Funcionalidades
+   Cadastrar novo usuário;
+   Enviar imagem de usuário para verificar autorização.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+5. Ambiente de produção
+   O aplicativo está disponível no link https://face-id-access.vercel.app/.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+6. Uso da aplicação
+   Acessar o link citado acima no ponto 5;
+   Ao abrir a aplicação, o usuário deve permitir o acesso à câmera;
+   Na tela inicial, no canto direito do header, clicar no ícone de mais (+);
+   Essa ação ativará o modal de cadastro de novo usuário;
+   Preencher o formulário com nome, email, 7 imagens tiradas na hora e as permissões desejadas e clicar em cadastrar;
+   Em caso de sucesso, essa ação ativará o toast de sucesso, no caso contrário o toast de erro;
+   Em caso de cadastro exitoso, o usuário deve capturar uma imagem na tela principal clicando no botão “Capturar” e depois em “Enviar”, para que a API realize a validação da sua imagem;
+   Em caso de sucesso, essa ação ativará o toast de sucesso, no caso contrário o toast de erro;
 
-## Learn More
+7. Funcionamento interno
+   A captura de imagem funciona através do método navigator.mediaDevices.getUserMedia, a partir disso, o sistema cria um canvas e preenche-o com a imagem obtida através da câmera do dispositivo;
+   Uma vez capturada, a imagem é transformada para o formato base64, conforme contratos de API;
+   Então, os dados respectivos às rotas de cadastro e reconhecimento são enviados para a API para que seja feita a validação e retornado um feedback que definirá qual tipo de toast será renderizado para o usuário.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+8. Limitações
+   Não foi possível conectar a interface com a API por uma limitação de CORS, visto que a API não estava habilitada a receber requisições de ambas URLs do front (localhost e a do deploy no vercel).
